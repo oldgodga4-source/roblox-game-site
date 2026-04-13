@@ -1,47 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Troll Slap Tower</title>
-  <style>
-    body {
-      margin: 0;
-      background: #111;
-      color: white;
-      font-family: Arial;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
+<meta charset="UTF-8">
+<title>Troll Slap Tower</title>
 
-    .btn {
-      background: #00ff88;
-      padding: 15px 30px;
-      font-size: 20px;
-      border: none;
-      cursor: pointer;
-      border-radius: 10px;
-      text-decoration: none;
-      color: black;
-      font-weight: bold;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0f0f0f;
+  color: white;
+}
 
-    .btn:hover {
-      background: #00cc66;
-    }
-  </style>
+.topbar {
+  background: #1b1b1b;
+  padding: 15px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.card {
+  background: #1c1c1c;
+  padding: 20px;
+  border-radius: 14px;
+  width: 340px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0,255,120,0.15);
+  transform: scale(1);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.thumb {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.title {
+  font-size: 22px;
+  margin: 10px 0;
+}
+
+.info {
+  color: #aaa;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 28px;
+  background: #00ff88;
+  color: black;
+  font-weight: bold;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  background: #00cc66;
+  transform: scale(1.05);
+}
+
+.live {
+  color: #00ff88;
+  font-weight: bold;
+}
+
+</style>
 </head>
+
 <body>
 
-  <h1>🧤 Troll Slap Tower</h1>
+<div class="topbar">🎮 Game Hub</div>
 
-  <p>Oyunu oynamak için butona bas</p>
+<div class="container">
 
-  <a class="btn" href="https://www.roblox.com/games/16464942738/[🧤]- Troll-Slap-Tower" target="_blank">
-    PLAY
-  </a>
+  <div class="card">
+
+    <img id="thumb" class="thumb" src="" />
+
+    <div class="title">🧤 Troll Slap Tower</div>
+
+    <div class="info">👥 Players: <span id="players">Loading...</span></div>
+    <div class="info">⭐ Rating: <span id="rating">Loading...</span></div>
+    <div class="info">👀 Visits: <span id="visits">Loading...</span></div>
+
+    <a class="btn"
+       href="https://www.roblox.com/games/16464942738"
+       target="_blank"
+       onclick="joinEffect()">
+       ▶ PLAY NOW
+    </a>
+
+  </div>
+
+</div>
+
+<script>
+
+const placeId = "16464942738";
+let universeId = "";
+
+// 🔥 Get Universe ID
+async function getUniverse() {
+  const res = await fetch(`https://apis.roblox.com/universes/v1/places/${placeId}/universe`);
+  const data = await res.json();
+  universeId = data.universeId;
+  loadGame();
+  loadThumb();
+}
+
+// 🎮 Game data (players, visits, rating)
+async function loadGame() {
+  const res = await fetch(`https://games.roblox.com/v1/games?universeIds=${universeId}`);
+  const data = await res.json();
+
+  const game = data.data[0];
+
+  document.getElementById("players").innerText = game.playing;
+  document.getElementById("visits").innerText = game.visits;
+
+  // rating fallback
+  let rating = "N/A";
+  if (game.favoritedCount) {
+    rating = game.favoritedCount + " favorites";
+  }
+
+  document.getElementById("rating").innerText = rating;
+}
+
+// 🖼️ Thumbnail
+async function loadThumb() {
+  const res = await fetch(`https://thumbnails.roblox.com/v1/games/icons?universeIds=${universeId}&size=512x512&format=Png`);
+  const data = await res.json();
+
+  document.getElementById("thumb").src = data.data[0].imageUrl;
+}
+
+// 🔁 Live update
+setInterval(() => {
+  if (universeId) loadGame();
+}, 10000);
+
+// ✨ Join effect
+function joinEffect() {
+  document.body.style.filter = "brightness(2)";
+  setTimeout(() => {
+    document.body.style.filter = "brightness(1)";
+  }, 200);
+}
+
+getUniverse();
+
+</script>
 
 </body>
 </html>
