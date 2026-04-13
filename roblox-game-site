@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Troll Slap Tower</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: white;
+      font-family: Arial;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .btn {
+      background: #00ff88;
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: #00cc66;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧤 Troll Slap Tower</h1>
+
+  <p>Oyunu oynamak için butona bas</p>
+
+  <a class="btn" href="https://www.roblox.com/games/16464942738/[🧤]- Troll-Slap-Tower" target="_blank">
+    PLAY
+  </a>
+
+</body>
+</html>
